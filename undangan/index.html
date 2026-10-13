@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
+  <meta name="theme-color" content="#FAF7F0" />
+  <title>Undangan Pernikahan {{couple.bride.name}} &amp; {{couple.groom.name}}</title>
+  <meta name="description" content="Undangan pernikahan {{couple.bride.name}} &amp; {{couple.groom.name}} — {{events.akad.displayDate}}, {{location.name}}, {{location.city}}." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="{{couple.bride.name}} &amp; {{couple.groom.name}}" />
+  <meta property="og:title" content="Undangan Pernikahan {{couple.bride.name}} &amp; {{couple.groom.name}}" />
+  <meta property="og:description" content="{{events.akad.displayDate}} · {{location.name}}, {{location.city}}." />
+  <meta property="og:url" content="%VITE_SITE_URL%/undangan/" />
+  <meta property="og:image" content="%VITE_SITE_URL%/assets/og-undangan.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="id_ID" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Undangan Pernikahan {{couple.bride.name}} &amp; {{couple.groom.name}}" />
+  <meta name="twitter:image" content="%VITE_SITE_URL%/assets/og-undangan.jpg" />
+
+  <link rel="icon" href="/assets/icons/nav_pasangan.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Marcellus&display=swap" />
+  <link rel="stylesheet" href="/src/undangan/style.css" />
+</head>
+<body>
+
+<!-- ====================== GATE ====================== -->
+<section class="gate" id="gate" aria-label="Sampul undangan">
+  <img class="corner tl depth" style="--z:-16" src="/src/undangan/img/corner.webp" alt="" fetchpriority="high" />
+  <img class="corner br depth" style="--z:-16" src="/src/undangan/img/corner.webp" alt="" />
+
+  <div class="gate-inner">
+    <div class="gate-head">
+      <p class="eyebrow g-in" style="--d:.15s">Undangan Pernikahan</p>
+      <p class="gate-names g-in" style="--d:.3s">{{couple.bride.name}} <span class="amp">&amp;</span> {{couple.groom.name}}</p>
+    </div>
+
+    <div class="env-stage depth g-in" style="--z:8; --d:.5s">
+      <div class="env">
+        <div class="env-back"></div>
+        <div class="env-letter" aria-hidden="true">
+          <span class="eyebrow">Undangan Pernikahan</span>
+          <b>{{couple.bride.name}} &amp; {{couple.groom.name}}</b>
+          <small>{{date.dots}}</small>
+        </div>
+        <svg class="env-pocket" viewBox="0 0 340 230" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0 L170 118 L340 0 V230 H0 Z" fill="#EDF0E5" />
+          <path d="M0 230 L170 134 L340 230 Z" fill="#F3F5EC" stroke="#A9BBA8" stroke-opacity=".6" />
+          <path d="M0 0 L170 118 L340 0" fill="none" stroke="#A9BBA8" stroke-opacity=".7" />
+        </svg>
+        <svg class="env-flap" viewBox="0 0 340 130" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0 H340 L170 128 Z" fill="#E6EADD" stroke="#A9BBA8" stroke-width="1.5" />
+          <path d="M18 0 L170 114 L322 0" fill="none" stroke="#D4AF37" stroke-opacity=".55" />
+        </svg>
+        <button class="seal" id="seal" aria-label="Buka undangan">
+          <span class="seal-half l"><img src="/src/undangan/img/wax-seal.webp" alt="" fetchpriority="high" /></span>
+          <span class="seal-half r"><img src="/src/undangan/img/wax-seal.webp" alt="" /></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="gate-foot g-in" style="--d:.75s">
+      <p class="to">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+      <p class="guest" id="guest">Tamu Undangan</p>
+      <button class="btn btn-primary" id="openBtn">Buka Undangan</button>
+    </div>
+  </div>
+</section>
+
+<div class="petals" aria-hidden="true">
+  <div class="petal p1"><i></i></div>
+  <div class="petal p2"><i class="leaf"></i></div>
+  <div class="petal p3"><i></i></div>
+  <div class="petal p4"><i class="leaf"></i></div>
+  <div class="petal p5"><i></i></div>
+</div>
+
+<div class="layout">
+  <!-- Desktop-only sticky panel -->
+  <aside class="side" aria-hidden="true">
+    <div class="side-img depth" style="--z:-14"><img src="/src/undangan/img/envelope-photo.webp" alt="" loading="lazy" decoding="async" /></div>
+    <div class="side-copy">
+      <p class="eyebrow">Undangan Pernikahan</p>
+      <p class="side-names">{{couple.bride.name}} <span class="amp">&amp;</span> {{couple.groom.name}}</p>
+      <p class="side-date">{{events.akad.displayDate}} · {{location.city}}</p>
+    </div>
+  </aside>
+
+  <main tabindex="-1">
+    <!-- ====================== HERO ====================== -->
+    <section class="sec hero">
+      <img class="bismillah ink-on-paper rv" src="/src/undangan/img/bismillah.webp" alt="Bismillahirrahmanirrahim" />
+      <p class="eyebrow rv" style="--d:150ms">Dengan rahmat Allah SWT</p>
+      <h1 class="names" aria-label="{{couple.bride.name}} dan {{couple.groom.name}}">
+        <span class="n1 rv split" data-split style="--d:300ms" aria-hidden="true">{{couple.bride.name}}</span>
+        <span class="amp rv" style="--d:700ms" aria-hidden="true">&amp;</span>
+        <span class="n2 rv split" data-split style="--d:800ms" aria-hidden="true">{{couple.groom.name}}</span>
+      </h1>
+      <p class="date rv" style="--d:1200ms" data-w="events.akad.displayDate"></p>
+
+      <div class="portrait rv" style="--d:1300ms">
+        <div class="arch"><img data-speed="-0.1" src="/src/undangan/img/couple.webp" alt="Ilustrasi {{couple.groom.name}} dan {{couple.bride.name}} dalam busana pengantin" /></div>
+      </div>
+
+      <div class="countdown rv" style="--d:300ms" aria-label="Hitung mundur menuju akad">
+        <div><b id="cdD">--</b><span>Hari</span></div>
+        <div><b id="cdH">--</b><span>Jam</span></div>
+        <div><b id="cdM">--</b><span>Menit</span></div>
+        <div><b id="cdS">--</b><span>Detik</span></div>
+      </div>
+      <p class="cue rv" style="--d:500ms">Gulir<i></i></p>
+    </section>
+
+    <!-- ====================== AYAT ====================== -->
+    <section class="sec night">
+      <div class="bg" data-speed="-0.22"><img src="/src/undangan/img/mihrab.webp" alt="" loading="lazy" decoding="async" /></div>
+      <div class="veil"></div>
+      <div class="stars" aria-hidden="true">
+        <i style="top:12%;left:18%;--s:4px;--t:2.6s"></i>
+        <i style="top:20%;right:16%;--s:5px;--t:3.4s;--dl:.6s"></i>
+        <i style="top:38%;left:9%;--s:3px;--t:2.2s;--dl:1.1s"></i>
+        <i style="top:46%;right:10%;--s:4px;--t:3s;--dl:.3s"></i>
+        <i style="top:66%;left:22%;--s:3px;--t:3.8s;--dl:1.6s"></i>
+        <i style="top:78%;right:24%;--s:5px;--t:2.8s;--dl:.9s"></i>
+        <i style="top:88%;left:50%;--s:3px;--t:3.2s;--dl:2s"></i>
+      </div>
+      <p class="eyebrow rv">Ar-Rum · Ayat 21</p>
+      <p class="ayat rv blur" dir="rtl" lang="ar" style="--d:150ms" data-w="quote.arabic"></p>
+      <p class="arti rv" style="--d:350ms" data-w="quote.translation" data-quote></p>
+      <p class="eyebrow surah rv" style="--d:500ms" data-w="quote.source"></p>
+    </section>
+
+    <!-- ====================== MEMPELAI ====================== -->
+    <section class="sec" id="mempelai">
+      <p class="eyebrow rv">Assalamu'alaikum Wr. Wb.</p>
+      <p class="lead rv" style="--d:120ms">Maha Suci Allah yang menciptakan makhluk-Nya berpasang-pasangan. Dengan memohon rahmat dan ridho-Nya, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
+      <img class="divider ink-on-paper rv" src="/src/undangan/img/divider.webp" alt="" loading="lazy" decoding="async" />
+
+      <div class="person rv from-l">
+        <img class="wreath ink-on-paper" src="/src/undangan/img/groom.webp" alt="Ilustrasi {{couple.groom.name}}" loading="lazy" decoding="async" />
+        <h3 class="pname" data-w="couple.groom.fullName"></h3>
+        <p class="eyebrow prole" data-w="couple.groom.orderInFamily"></p>
+        <p class="parents"><span data-w="couple.groom.fatherName"></span><br />&amp; <span data-w="couple.groom.motherName"></span></p>
+        <a class="ig" data-ig="couple.groom.instagram" target="_blank" rel="noopener"></a>
+      </div>
+
+      <span class="amp big rv blur" aria-hidden="true">&amp;</span>
+
+      <div class="person rv from-r">
+        <img class="wreath ink-on-paper" src="/src/undangan/img/bride.webp" alt="Ilustrasi {{couple.bride.name}}" loading="lazy" decoding="async" />
+        <h3 class="pname" data-w="couple.bride.fullName"></h3>
+        <p class="eyebrow prole" data-w="couple.bride.orderInFamily"></p>
+        <p class="parents"><span data-w="couple.bride.fatherName"></span><br />&amp; <span data-w="couple.bride.motherName"></span></p>
+        <a class="ig" data-ig="couple.bride.instagram" target="_blank" rel="noopener"></a>
+      </div>
+    </section>
+
+    <!-- ====================== ACARA ====================== -->
+    <section class="sec tight" id="acara">
+      <p class="eyebrow rv">Waktu &amp; Tempat</p>
+      <h2 class="h2 rv blur" style="--d:100ms">Rangkaian Acara</h2>
+      <article class="event rv" data-event="akad">
+        <img class="badge" src="/src/undangan/img/badge-akad.webp" alt="" loading="lazy" decoding="async" />
+        <h3 class="ev-title" data-w="events.akad.title"></h3>
+        <p class="eyebrow ev-date" data-w="events.akad.displayDate"></p>
+        <p class="ev-time" data-w="events.akad.time"></p>
+        <hr class="hair" />
+        <p class="ev-venue" data-w="events.akad.venue"></p>
+        <p class="ev-addr" data-w="events.akad.address"></p>
+        <p class="ev-dress">Dresscode: <span data-w="events.akad.dresscode"></span></p>
+        <div class="actions">
+          <a class="btn btn-primary" data-maps target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>Buka Peta</a>
+          <a class="btn btn-ghost" data-cal target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg>Simpan ke Kalender</a>
+        </div>
+      </article>
+      <article class="event rv" data-event="resepsi">
+        <img class="badge" src="/src/undangan/img/badge-resepsi.webp" alt="" loading="lazy" decoding="async" />
+        <h3 class="ev-title" data-w="events.resepsi.title"></h3>
+        <p class="eyebrow ev-date" data-w="events.resepsi.displayDate"></p>
+        <p class="ev-time" data-w="events.resepsi.time"></p>
+        <hr class="hair" />
+        <p class="ev-venue" data-w="events.resepsi.venue"></p>
+        <p class="ev-addr" data-w="events.resepsi.address"></p>
+        <p class="ev-dress">Dresscode: <span data-w="events.resepsi.dresscode"></span></p>
+        <div class="actions">
+          <a class="btn btn-primary" data-maps target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>Buka Peta</a>
+          <a class="btn btn-ghost" data-cal target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg>Simpan ke Kalender</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- ====================== ADVENTURE OF US ====================== -->
+    <section class="sec tight" id="adventure">
+      <article class="event quest rv">
+        <svg class="star8" viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="14" y="14" width="36" height="36" pathLength="1" />
+          <rect x="14" y="14" width="36" height="36" pathLength="1" transform="rotate(45 32 32)" />
+          <circle cx="32" cy="32" r="5" pathLength="1" />
+        </svg>
+        <p class="eyebrow">Satu kejutan kecil</p>
+        <h2 class="h2">Adventure of Us</h2>
+        <p class="quest-copy">Kami menyiapkan sebuah taman kecil untukmu. Jalan-jalan, sapa kami di pelaminan, dan tinggalkan jejakmu di sana.</p>
+        <a class="btn btn-gold" id="questLink" href="/">Masuk ke Wedding Quest
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+        <img class="divider ink-on-paper" src="/src/undangan/img/divider.webp" alt="" loading="lazy" decoding="async" />
+      </article>
+    </section>
+
+    <!-- ====================== UCAPAN & RSVP ====================== -->
+    <section class="sec tight" id="rsvp">
+      <p class="eyebrow rv">Kehadiran &amp; Doa</p>
+      <h2 class="h2 rv blur" style="--d:100ms">Kirim Ucapan</h2>
+      <p class="lead rv" style="--d:200ms">Mohon konfirmasi kehadiran Anda dan titipkan doa untuk kedua mempelai.</p>
+
+      <form class="form rv" id="rsvpForm" novalidate>
+        <label class="field">
+          <span>Nama</span>
+          <input name="name" maxlength="40" autocomplete="name" />
+          <em class="err" data-err="name">Nama belum diisi</em>
+        </label>
+
+        <fieldset class="field">
+          <legend>Kehadiran</legend>
+          <div class="seg">
+            <label><input type="radio" name="attending" value="yes" /><span>Hadir</span></label>
+            <label><input type="radio" name="attending" value="no" /><span>Tidak hadir</span></label>
+          </div>
+          <em class="err" data-err="attending">Pilih salah satu</em>
+        </fieldset>
+
+        <div class="reveal" id="guestsRow">
+          <div class="field">
+            <span class="field-label">Jumlah tamu</span>
+            <div class="stepper">
+              <button type="button" data-step="-1" aria-label="Kurangi tamu">−</button>
+              <output id="guests" aria-live="polite">1</output>
+              <button type="button" data-step="1" aria-label="Tambah tamu">+</button>
+              <small>orang</small>
+            </div>
+          </div>
+        </div>
+
+        <label class="field">
+          <span>Doa &amp; ucapan</span>
+          <textarea name="message" rows="4" maxlength="200"></textarea>
+          <span class="field-foot"><em class="err" data-err="message">Ucapan belum diisi</em><small id="count">0 / 200</small></span>
+        </label>
+
+        <div class="field">
+          <button type="button" class="sticker-btn" id="stickerBtn" aria-expanded="false" aria-controls="stickerTray">
+            <span id="stickerPick" class="sticker-pick" hidden><img alt="" /></span>
+            <span id="stickerLabel">Tambah sticker</span>
+          </button>
+          <div class="reveal" id="stickerTray"><div class="tray" id="tray" role="group" aria-label="Pilih sticker"></div></div>
+        </div>
+
+        <button class="btn btn-primary block" type="submit" id="submitBtn">Kirim ucapan</button>
+      </form>
+
+      <div class="wishes-head rv"><span class="eyebrow">Ucapan dari para tamu</span><span class="eyebrow" id="wishCount"></span></div>
+      <div class="wishes" id="wishes" aria-live="polite"><p class="empty">Memuat ucapan…</p></div>
+      <button class="btn btn-ghost more" id="moreBtn" type="button" hidden>Tampilkan lebih banyak</button>
+    </section>
+
+    <!-- ====================== PENUTUP ====================== -->
+    <footer class="sec closing">
+      <img class="corner tl" data-speed="0.08" src="/src/undangan/img/corner.webp" alt="" loading="lazy" decoding="async" />
+      <img class="corner br" data-speed="-0.08" src="/src/undangan/img/corner.webp" alt="" loading="lazy" decoding="async" />
+      <p class="lead rv">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p>
+      <p class="ayat rv blur" dir="rtl" lang="ar" style="--d:150ms" data-w="blessing.text"></p>
+      <p class="arti rv" style="--d:300ms" data-w="blessing.meaning" data-quote></p>
+      <p class="eyebrow surah rv" style="--d:400ms" data-w="blessing.source"></p>
+      <img class="divider ink-on-paper rv" src="/src/undangan/img/divider.webp" alt="" loading="lazy" decoding="async" />
+      <p class="eyebrow rv">Wassalamu'alaikum Wr. Wb.</p>
+      <p class="rv muted" style="margin-top:22px">Kami yang berbahagia</p>
+      <p class="families rv">Kel. <span data-w="couple.groom.fatherName"></span><br />&amp; <span data-w="couple.groom.motherName"></span></p>
+      <p class="families rv">Kel. <span data-w="couple.bride.fatherName"></span><br />&amp; <span data-w="couple.bride.motherName"></span></p>
+      <p class="names end rv">{{couple.bride.name}} <span class="amp">&amp;</span> {{couple.groom.name}}</p>
+      <p class="tag rv" data-w="hashtag"></p>
+    </footer>
+  </main>
+</div>
+
+<button class="music" id="music" aria-label="Putar atau jeda musik" aria-pressed="false">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="2.2" /><path d="M12 5.5A6.5 6.5 0 0 1 18.5 12" /></svg>
+</button>
+<p class="credit" id="credit" aria-live="polite"></p>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="/src/undangan/main.ts"></script>
+</body>
+</html>

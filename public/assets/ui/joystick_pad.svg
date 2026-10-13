@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" shape-rendering="crispEdges">
+  <!-- Outer D-Pad Base Ring (Translucent with Wood/Gold border) -->
+  <circle cx="60" cy="60" r="54" fill="#2D1E18" fill-opacity="0.65" stroke="#D4AF37" stroke-width="3"/>
+  <circle cx="60" cy="60" r="48" fill="none" stroke="#FDF6E2" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- Directional Pixel Arrows (Up, Down, Left, Right) -->
+  <!-- UP Arrow -->
+  <polygon points="60,14 52,24 68,24" fill="#F4E07B"/>
+  <!-- DOWN Arrow -->
+  <polygon points="60,106 52,96 68,96" fill="#F4E07B"/>
+  <!-- LEFT Arrow -->
+  <polygon points="14,60 24,52 24,68" fill="#F4E07B"/>
+  <!-- RIGHT Arrow -->
+  <polygon points="106,60 96,52 96,68" fill="#F4E07B"/>
+
+  <!-- Center Thumb Stick Knob -->
+  <circle cx="60" cy="60" r="24" fill="#4A2E18" stroke="#D4AF37" stroke-width="3"/>
+  <circle cx="60" cy="60" r="18" fill="#734D2E"/>
+  <!-- Grip Lines on Center Knob -->
+  <rect x="52" y="58" width="16" height="4" fill="#D4AF37" rx="1"/>
+  <rect x="58" y="52" width="4" height="16" fill="#D4AF37" rx="1"/>
+</svg>

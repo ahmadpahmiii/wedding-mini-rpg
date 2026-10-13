@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 50" width="140" height="50" shape-rendering="crispEdges">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700&amp;display=swap');
+      .pointer-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 700; fill: #FDF6E2; text-anchor: middle; letter-spacing: 0.5px; }
+    </style>
+  </defs>
+
+  <!-- Glowing Outer Pixel Box -->
+  <rect x="2" y="2" width="136" height="32" fill="#D4AF37" rx="4"/>
+  <rect x="4" y="4" width="132" height="28" fill="#2D1E18" rx="3"/>
+  <rect x="6" y="6" width="128" height="24" fill="#4A2E18" rx="2"/>
+
+  <!-- Label Text -->
+  <text x="70" y="22" class="pointer-text">💬 TAP / BUKA (E)</text>
+
+  <!-- Downward Arrow Indicator -->
+  <polygon points="60,34 80,34 70,46" fill="#D4AF37"/>
+  <polygon points="62,34 78,34 70,42" fill="#2D1E18"/>
+  <polygon points="65,34 75,34 70,39" fill="#4A2E18"/>
+</svg>

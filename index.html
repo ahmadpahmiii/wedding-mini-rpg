@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
+    <meta name="theme-color" content="#1b110d" />
+    <title>{{title}} — Wedding Quest</title>
+    <meta name="description" content="Undangan pernikahan interaktif {{couple.bride.name}} &amp; {{couple.groom.name}}. Jelajahi taman pernikahan kami — {{events.akad.displayDate}}, {{location.name}}, {{location.city}}." />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Wedding Quest" />
+    <meta property="og:title" content="{{title}}" />
+    <meta property="og:description" content="Yuk jalan-jalan keliling peta pernikahan kami dan sapa pasangan. {{events.akad.displayDate}}." />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/assets/og-cover.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="id_ID" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{title}}" />
+    <meta name="twitter:description" content="Undangan pernikahan interaktif 16-bit. {{events.akad.displayDate}}." />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/assets/og-cover.jpg" />
+
+    <link rel="icon" href="/assets/icons/nav_pasangan.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Amiri&display=swap"
+    />
+    <link rel="preload" as="image" href="/assets/map/world_map_base.jpg" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

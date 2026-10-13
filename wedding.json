@@ -1,0 +1,105 @@
+{
+  "title": "The Wedding of Nadia & Raka",
+  "hashtag": "#NadiaRakaQuest",
+  "location": {
+    "name": "Gedung Serbaguna Melati",
+    "city": "Bandung, Jawa Barat"
+  },
+  "couple": {
+    "bride": {
+      "name": "Nadia",
+      "fullName": "Nadia Ayu Lestari",
+      "orderInFamily": "Putri pertama dari",
+      "fatherName": "Bapak Hendra Wijaya",
+      "motherName": "Ibu Sri Wahyuni",
+      "instagram": "contoh.mempelaiwanita",
+      "bio": "Penyuka kopi susu dan perjalanan jauh, siap memulai petualangan baru bersama Raka.",
+      "attire": "Kebaya Putih, Hijab Putih, Siger Sunda"
+    },
+    "groom": {
+      "name": "Raka",
+      "fullName": "Raka Aditya Pratama",
+      "orderInFamily": "Putra kedua dari",
+      "fatherName": "Bapak Budi Santoso",
+      "motherName": "Ibu Dewi Kartika",
+      "instagram": "contoh.mempelaipria",
+      "bio": "Pecinta game retro dan masakan rumahan, akhirnya menemukan player 2 terbaiknya.",
+      "attire": "Beskap Putih, Kopiah Hitam, Kain Batik"
+    }
+  },
+  "events": {
+    "akad": {
+      "title": "Akad Nikah",
+      "date": "2027-06-12",
+      "displayDate": "Sabtu, 12 Juni 2027",
+      "time": "08:00 - 10:00 WIB",
+      "venue": "Masjid Contoh",
+      "address": "Jl. Contoh Raya No. 12, Kel. Contoh, Kec. Contoh, Kota Bandung, Jawa Barat 40000",
+      "mapsUrl": "https://maps.google.com/?q=Bandung",
+      "dresscode": "Pakaian Formal / Sopan"
+    },
+    "resepsi": {
+      "title": "Resepsi Pernikahan",
+      "date": "2027-06-12",
+      "displayDate": "Sabtu, 12 Juni 2027",
+      "time": "11:00 - 14:00 WIB",
+      "venue": "Gedung Serbaguna Melati",
+      "address": "Jl. Contoh Raya No. 12, Kel. Contoh, Kec. Contoh, Kota Bandung, Jawa Barat 40000",
+      "mapsUrl": "https://maps.google.com/?q=Bandung",
+      "dresscode": "Batik / Pakaian Formal"
+    }
+  },
+  "ceremonyStart": "2027-06-12T08:00:00+07:00",
+  "quote": {
+    "arabic": "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً",
+    "translation": "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.",
+    "source": "QS. Ar-Rum: 21"
+  },
+  "blessing": {
+    "text": "بَارَكَ اللهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ",
+    "meaning": "Semoga Allah memberkahimu di waktu bahagia dan memberkahimu di waktu susah, serta mengumpulkan kalian berdua dalam kebaikan.",
+    "source": "HR. Abu Dawud"
+  },
+  "bgmUrl": "/assets/audio/bgm.m4a",
+  "invitationBgm": {
+    "url": "/assets/audio/nour-el-ein-oud.m4a",
+    "credit": "Nour El Ein · oud by Ahmed Alshaiba"
+  },
+  "ngobrol": {
+    "names": { "bride": "Nadia", "groom": "Raka" },
+    "title": "Seberapa Kenal Kamu Sama Kami? 👀",
+    "subtitle": "Nggak ada jawaban benar atau salah. Pilih aja, nanti yang ditunjuk yang jawab.",
+    "questions": [
+      {
+        "question": "Siapa yang lebih sering telat? ⏰",
+        "options": [
+          { "label": "Nadia", "response": "Aku nggak telat, cuma datang di waktu yang paling tepat 😌" },
+          { "label": "Raka", "response": "Sebenarnya udah siap dari tadi, cuma belum berangkat aja." },
+          { "label": "Dua-duanya", "response": "Makanya kalau janjian sama kami, majuin setengah jam ya 😂" }
+        ]
+      },
+      {
+        "question": "Siapa yang paling lama milih menu makan? 🍜",
+        "options": [
+          { "label": "Nadia", "response": "Aku cuma mempertimbangkan semua kemungkinan dengan matang." },
+          { "label": "Raka", "response": "Terserah. Tapi jangan yang itu." },
+          { "label": "Dua-duanya", "response": "Ujung-ujungnya pesan yang biasa juga 😭" }
+        ]
+      },
+      {
+        "question": "Siapa yang lebih romantis? ❤️",
+        "options": [
+          { "label": "Nadia", "response": "Jelas aku. Tapi jangan bilang-bilang, nanti dia geer." },
+          { "label": "Raka", "response": "Hmm... sebenarnya aku, tapi biar dia aja yang menang 😌", "by": "bride" },
+          { "label": "Dua-duanya", "response": "Jawaban yang aman. Kamu lolos ke pertanyaan berikutnya 👍" }
+        ]
+      }
+    ],
+    "verdicts": {
+      "both": { "title": "Diplomat rumah tangga", "body": "Hampir tiap ditanya, jawabanmu \"dua-duanya\". Aman, damai, nggak ada yang ngambek 😂" },
+      "tie": { "title": "Netral... mencurigakan", "body": "Nadia dan Raka dapat jumlah yang sama persis. Terlalu seimbang 🤨" },
+      "bride": { "title": "Tim Nadia garis keras", "body": "Kamu lebih sering nunjuk Nadia. Kenal banget, atau diam-diam satu kubu? 😌" },
+      "groom": { "title": "Pendukung setia Raka", "body": "Kamu lebih sering nunjuk Raka. Kenal banget, atau diam-diam satu kubu? 😌" }
+    }
+  }
+}

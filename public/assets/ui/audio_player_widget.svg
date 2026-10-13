@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" width="160" height="48" shape-rendering="crispEdges">
+  <!-- Outer Parchment Capsule Pill -->
+  <rect x="2" y="2" width="156" height="44" fill="#2D1E18" stroke="#D4AF37" stroke-width="2" rx="22"/>
+  <rect x="5" y="5" width="150" height="38" fill="#FDF6E2" rx="19"/>
+
+  <!-- Mini Vinyl Record (Left Side) -->
+  <g transform="translate(24, 24)">
+    <circle cx="0" cy="0" r="16" fill="#111111" stroke="#D4AF37" stroke-width="1.5"/>
+    <circle cx="0" cy="0" r="12" fill="none" stroke="#333333" stroke-width="1"/>
+    <circle cx="0" cy="0" r="8" fill="none" stroke="#222222" stroke-width="1"/>
+    <!-- Center Label -->
+    <circle cx="0" cy="0" r="5" fill="#EF4444"/>
+    <circle cx="0" cy="0" r="1.5" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Soundwave Bars & Track Info -->
+  <g transform="translate(48, 12)">
+    <text x="0" y="10" font-family="'Plus Jakarta Sans', sans-serif" font-size="9px" font-weight="700" fill="#2D1E18">GAMBUS ROMANTIS</text>
+    
+    <!-- Animated Soundwave Bars (Pixel EQ) -->
+    <g transform="translate(0, 16)">
+      <rect x="0" y="0" width="3" height="8" fill="#2D4A3E"/>
+      <rect x="5" y="-4" width="3" height="12" fill="#2D4A3E"/>
+      <rect x="10" y="-8" width="3" height="16" fill="#D4AF37"/>
+      <rect x="15" y="-2" width="3" height="10" fill="#2D4A3E"/>
+      <rect x="20" y="-6" width="3" height="14" fill="#2D4A3E"/>
+      <rect x="25" y="-1" width="3" height="9" fill="#D4AF37"/>
+    </g>
+  </g>
+
+  <!-- Play / Pause Icon Button (Right Side) -->
+  <g transform="translate(136, 24)">
+    <circle cx="0" cy="0" r="10" fill="#2D4A3E" stroke="#D4AF37" stroke-width="1.5"/>
+    <!-- Play Triangle -->
+    <polygon points="-3,-5 5,0 -3,5" fill="#FDF6E2"/>
+  </g>
+</svg>

@@ -1,0 +1,18 @@
+node_modules
+dist
+.DS_Store
+*.local
+.env
+!.env.production
+.env.local
+.vercel
+.env*
+
+# Your real wedding details. wedding.json is the public sample; when this
+# file exists the build uses it instead. See README.
+wedding.local.json
+
+# Private planning notes
+prd.md
+prompt.md
+goals.md

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap');
+      .cover-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; fill: #2D1E18; text-anchor: middle; font-style: italic; }
+      .cover-sub { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 700; fill: #8B6F47; text-anchor: middle; letter-spacing: 3px; }
+      .guest-label { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 600; fill: #8B6F47; text-anchor: middle; }
+      .guest-name { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 16px; font-weight: 700; fill: #2D4A3E; text-anchor: middle; }
+    </style>
+
+    <linearGradient id="envelopeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF7"/>
+      <stop offset="100%" stop-color="#EAD9BE"/>
+    </linearGradient>
+    <linearGradient id="waxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EF4444"/>
+      <stop offset="50%" stop-color="#B91C1C"/>
+      <stop offset="100%" stop-color="#7F1D1D"/>
+    </linearGradient>
+    <linearGradient id="goldRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#AA8022"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Envelope Body Base -->
+  <rect x="20" y="20" width="460" height="310" fill="url(#envelopeGrad)" stroke="#4A2E18" stroke-width="4" rx="12"/>
+  <rect x="28" y="28" width="444" height="294" fill="none" stroke="#D4AF37" stroke-width="1.5" rx="8"/>
+
+  <!-- Gold Ribbon Vertical & Horizontal -->
+  <rect x="240" y="20" width="20" height="310" fill="url(#goldRibbon)"/>
+  <rect x="20" y="160" width="460" height="20" fill="url(#goldRibbon)"/>
+
+  <!-- Upper Envelope Flap Triangle -->
+  <polygon points="20,20 250,170 480,20" fill="#FDF6E2" stroke="#4A2E18" stroke-width="3"/>
+  <polygon points="28,26 250,162 472,26" fill="none" stroke="#D4AF37" stroke-width="1"/>
+
+  <!-- Header Couple Names (Top Flap Area) -->
+  <text x="250" y="60" class="cover-sub">THE WEDDING INVITATION</text>
+  <text x="250" y="95" class="cover-title">{{couple.bride.name}} &amp; {{couple.groom.name}}</text>
+  <text x="250" y="125" class="cover-sub">{{date.long|upper}}</text>
+
+  <!-- Guest Card Slot (Bottom Center) -->
+  <g transform="translate(250, 235)">
+    <rect x="-140" y="-30" width="280" height="60" fill="#FFFFFF" stroke="#4A2E18" stroke-width="2" rx="8"/>
+    <text x="0" y="-8" class="guest-label">Kepada Yth. Bapak/Ibu/Saudara/i:</text>
+    <text x="0" y="18" class="guest-name">Tamu Undangan</text>
+  </g>
+
+  <!-- Center Wax Seal Button Stamp -->
+  <g transform="translate(250, 170)" style="cursor: pointer;">
+    <!-- Wax Seal Outer Ring -->
+    <circle cx="0" cy="0" r="30" fill="url(#waxGrad)" stroke="#4A2E18" stroke-width="3"/>
+    <circle cx="0" cy="0" r="26" fill="url(#waxGrad)" stroke="#FCA5A5" stroke-width="1" stroke-opacity="0.5"/>
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="3,2"/>
+    
+    <!-- Monogram I & F -->
+    <text x="0" y="7" font-family="'Playfair Display', serif" font-size="18px" font-weight="700" fill="#FDF6E2" text-anchor="middle" font-style="italic">{{couple.bride.name|initial}}&amp;{{couple.groom.name|initial}}</text>
+  </g>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%" shape-rendering="crispEdges">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Plus+Jakarta+Sans:wght@700&amp;display=swap');
+      .rpg-title { font-family: 'Press Start 2P', monospace; font-size: 16px; fill: #FDF6E2; text-anchor: middle; }
+      .rpg-couple { font-family: 'Press Start 2P', monospace; font-size: 14px; fill: #F4E07B; text-anchor: middle; }
+      .rpg-date { font-family: 'Press Start 2P', monospace; font-size: 10px; fill: #FFFFFF; text-anchor: middle; }
+      .rpg-sub { font-family: 'Press Start 2P', monospace; font-size: 8px; fill: #C4A482; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <!-- Wooden Game UI Frame Base -->
+  <rect x="0" y="0" width="600" height="800" fill="#2D1E18" rx="8"/>
+  <rect x="8" y="8" width="584" height="784" fill="#4A2E18"/>
+  <rect x="16" y="16" width="568" height="768" fill="#734D2E"/>
+  <rect x="24" y="24" width="552" height="752" fill="#2D1E18"/>
+
+  <!-- Top Blue Banner: WEDDING QUEST -->
+  <rect x="140" y="32" width="320" height="40" fill="#1D4ED8"/>
+  <rect x="144" y="36" width="312" height="32" fill="#2563EB"/>
+  <rect x="140" y="32" width="320" height="4" fill="#60A5FA"/>
+  <rect x="140" y="68" width="320" height="4" fill="#1E3A8A"/>
+  <!-- Banner Tail Trim -->
+  <polygon points="120,52 140,32 140,72" fill="#1E3A8A"/>
+  <polygon points="480,52 460,32 460,72" fill="#1E3A8A"/>
+  <text x="300" y="58" class="rpg-title">WEDDING QUEST</text>
+
+  <!-- HP Hearts Bar (Top Center) -->
+  <g transform="translate(190, 84)">
+    <g transform="translate(0, 0)"><rect x="0" y="0" width="16" height="14" fill="#EF4444"/><rect x="2" y="2" width="4" height="4" fill="#FCA5A5"/></g>
+    <g transform="translate(24, 0)"><rect x="0" y="0" width="16" height="14" fill="#EF4444"/><rect x="2" y="2" width="4" height="4" fill="#FCA5A5"/></g>
+    <g transform="translate(48, 0)"><rect x="0" y="0" width="16" height="14" fill="#EF4444"/><rect x="2" y="2" width="4" height="4" fill="#FCA5A5"/></g>
+    <g transform="translate(72, 0)"><rect x="0" y="0" width="16" height="14" fill="#EF4444"/><rect x="2" y="2" width="4" height="4" fill="#FCA5A5"/></g>
+    <g transform="translate(96, 0)"><rect x="0" y="0" width="16" height="14" fill="#EF4444"/><rect x="2" y="2" width="4" height="4" fill="#FCA5A5"/></g>
+  </g>
+
+  <!-- Left Side RPG Heart Gems -->
+  <g transform="translate(36, 120)">
+    <rect x="0" y="0" width="16" height="14" fill="#EF4444"/>
+    <rect x="0" y="40" width="16" height="14" fill="#EF4444"/>
+    <rect x="0" y="80" width="16" height="14" fill="#EF4444"/>
+    <rect x="0" y="120" width="16" height="14" fill="#EF4444"/>
+    <rect x="0" y="160" width="16" height="14" fill="#D4AF37"/>
+    <!-- Gold Coin -->
+    <circle cx="8" cy="220" r="10" fill="#F59E0B"/>
+    <circle cx="8" cy="220" r="7" fill="#FBBF24"/>
+  </g>
+
+  <!-- Right Side RPG Mana & Gems -->
+  <g transform="translate(548, 120)">
+    <polygon points="8,0 16,12 8,24 0,12" fill="#A855F7"/>
+    <polygon points="8,40 16,52 8,64 0,52" fill="#3B82F6"/>
+    <polygon points="8,80 16,92 8,104 0,92" fill="#10B981"/>
+    <polygon points="8,120 16,132 8,144 0,132" fill="#EC4899"/>
+    <polygon points="8,160 16,172 8,184 0,172" fill="#10B981"/>
+  </g>
+
+  <!-- TRANSPARENT PHOTO VIEWPORT -->
+  <!-- Dimensions: 460x490 at (70, 115) -->
+  <rect x="66" y="111" width="468" height="498" fill="#FDF6E2"/>
+  <rect x="70" y="115" width="460" height="490" fill="#FFFFFF"/>
+  <rect x="66" y="111" width="468" height="498" fill="none" stroke="#2D1E18" stroke-width="4"/>
+
+  <!-- BOTTOM STATS / SAVE GAME FOOTER -->
+  <rect x="56" y="625" width="488" height="135" fill="#1E140F" stroke="#D4AF37" stroke-width="2" rx="4"/>
+  
+  <!-- Player Names & Save Game Header -->
+  <text x="300" y="658" class="rpg-sub">PLAYER 1 &amp; PLAYER 2</text>
+  <text x="300" y="688" class="rpg-couple">★ {{couple.bride.name|upper}} &amp; {{couple.groom.name|upper}} ★</text>
+  
+  <!-- Date & Level Info -->
+  <text x="300" y="718" class="rpg-date">♥ SAVE DATE: {{date.short|upper}} ♥</text>
+  <text x="300" y="742" class="rpg-sub">LEVEL: INFINITY LOVE • STATUS: HAPPILY EVER AFTER</text>
+
+  <!-- Little Mana Bars on Bottom Left -->
+  <g transform="translate(70, 645)">
+    <rect x="0" y="0" width="30" height="6" fill="#EF4444"/>
+    <rect x="0" y="10" width="30" height="6" fill="#3B82F6"/>
+    <rect x="0" y="20" width="30" height="6" fill="#10B981"/>
+  </g>
+</svg>
