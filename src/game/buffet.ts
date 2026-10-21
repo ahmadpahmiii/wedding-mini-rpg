@@ -55,6 +55,18 @@ export const RECIPES: Record<RecipeId, Recipe> = {
 
 export const ROUND_MS = 45_000;
 export const MAX_ORDERS = 3;
+
+/**
+ * The dishes for one round. These used to alternate, bakso then sate then
+ * bakso, so the guest knew the next order before the plate was even cleared
+ * and could start hunting early. With two recipes, random means the same dish
+ * can come up twice or all three times — that is the price of unpredictable,
+ * and it is the point.
+ */
+export function orderQueue(first: RecipeId, rand: () => number = Math.random): RecipeId[] {
+  const ids = Object.keys(RECIPES) as RecipeId[];
+  return [first, ...Array.from({ length: MAX_ORDERS - 1 }, () => ids[Math.floor(rand() * ids.length)])];
+}
 /** The speed bonus runs down to nothing over this long, per order. */
 export const SPEED_MS = 15_000;
 
@@ -102,6 +114,9 @@ export interface Round {
   /** Which tray sits where this round. Shuffled once, not per order: a shelf
    *  that moves under the guest mid-round reads as a bug, not a challenge. */
   shelf: IngredientId[];
+  /** The dishes to come, drawn when the round starts. queue[0] is the order
+   *  on the plate now, so served.length indexes the next one. */
+  queue: RecipeId[];
 }
 
 export type Action =
@@ -114,6 +129,7 @@ export function startRound(now: number, first: RecipeId, rand: () => number = Ma
     phase: 'play', endsAt: now + ROUND_MS, now, served: [],
     order: { recipe: first, picked: [], startedAt: now },
     shelf: shelfOrder(rand),
+    queue: orderQueue(first, rand),
   };
 }
 
@@ -125,8 +141,7 @@ function serve(r: Round, now: number, last: boolean): Round {
   const result = score(RECIPES[o.recipe], o.picked, now - o.startedAt);
   const served = [...r.served, { recipe: o.recipe, picked: o.picked, ...result }];
   if (last || served.length >= MAX_ORDERS) return { ...r, now, served, order: null, phase: 'over' };
-  const next: RecipeId = o.recipe === 'bakso' ? 'sate' : 'bakso';
-  return { ...r, now, served, order: { recipe: next, picked: [], startedAt: now } };
+  return { ...r, now, served, order: { recipe: r.queue[served.length], picked: [], startedAt: now } };
 }
 
 /**

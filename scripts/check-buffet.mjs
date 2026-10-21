@@ -6,7 +6,7 @@
 import './_register-ts.mjs';
 import assert from 'node:assert/strict';
 
-const { RECIPES, INGREDIENTS, shelfOrder, score, startRound, step, roundTotal, isCorrect, ROUND_MS, MAX_ORDERS, SPEED_MS } =
+const { RECIPES, INGREDIENTS, shelfOrder, orderQueue, score, startRound, step, roundTotal, isCorrect, ROUND_MS, MAX_ORDERS, SPEED_MS } =
   await import('../src/game/buffet.ts');
 
 let n = 0;
@@ -45,7 +45,7 @@ ok(score(bakso, full, 1234).points.total === score(bakso, full, 1234).points.tot
 
 // --- the round
 const t0 = 1_000_000;
-let r = startRound(t0, 'bakso');
+let r = startRound(t0, 'bakso', () => 0.9); // queue: bakso, sate, sate
 ok(r.order.recipe === 'bakso' && r.endsAt === t0 + ROUND_MS, 'a round starts with the chosen order and a full clock');
 
 r = step(r, { type: 'toggle', id: 'bakso' });
@@ -59,7 +59,7 @@ ok(step(empty, { type: 'serve', now: t0 + 100 }) === empty, 'an empty plate cann
 
 for (const id of ['sayur', 'kuah']) r = step(r, { type: 'toggle', id });
 r = step(r, { type: 'serve', now: t0 + 3000 });
-ok(r.served.length === 1 && r.order.recipe === 'sate' && r.order.picked.length === 0, 'serving brings the next order, alternating');
+ok(r.served.length === 1 && r.order.recipe === 'sate' && r.order.picked.length === 0, 'serving brings the next order off the queue');
 const again = step(r, { type: 'serve', now: t0 + 3010 });
 ok(again === r && again.served.length === 1, 'a double tap on serve scores nothing twice');
 
@@ -125,5 +125,40 @@ ok(new Set(fresh.shelf).size === ALL.length, 'and no tray on it twice');
 // The shelf must hold still once the round is running.
 const after = step(step(fresh, { type: 'toggle', id: 'bakso' }), { type: 'tick', now: 1000 });
 ok(after.shelf.join() === fresh.shelf.join(), 'the shelf does not move under the guest mid-round');
+
+// --- the dish order is drawn, not alternated
+// bakso -> sate -> bakso told the guest the next order before the plate was
+// cleared. The queue is rolled when the round starts so serve() stays pure.
+const IDS = Object.keys(RECIPES);
+const low = () => 0, high = () => 0.9;
+
+for (const first of IDS) {
+  const q = orderQueue(first, high);
+  ok(q.length === MAX_ORDERS, `${first}: the queue holds all ${MAX_ORDERS} orders`);
+  ok(q[0] === first, `${first}: the round opens with the dish it was given`);
+  ok(q.every((id) => IDS.includes(id)), `${first}: every order is a real recipe`);
+}
+
+// The whole point: a dish may now follow itself, which alternating forbade.
+ok(orderQueue(IDS[0], low).every((id) => id === IDS[0]), 'the same dish can come up three times');
+ok(new Set(orderQueue(IDS[0], high)).size === 2, 'and a different one can follow it');
+
+// Both dishes must be reachable in every slot after the first.
+const slots = Array.from({ length: MAX_ORDERS }, () => new Set());
+for (let i = 0; i < 2000; i++) {
+  const seed = seeded(i * 7919 + 3);
+  orderQueue(IDS[i % IDS.length], seed).forEach((id, pos) => slots[pos].add(id));
+}
+for (let pos = 1; pos < MAX_ORDERS; pos++) {
+  ok(slots[pos].size === IDS.length, `order ${pos + 1} can be either dish`);
+}
+
+// And the queue actually drives what gets served.
+let q = startRound(t0, 'sate', low); // queue: sate, bakso, bakso
+ok(q.queue.join() === ['sate', IDS[0], IDS[0]].join(), 'the queue is laid out at the start of the round');
+q = step(q, { type: 'toggle', id: 'sate' });
+q = step(q, { type: 'serve', now: t0 + 500 });
+ok(q.order.recipe === q.queue[1], 'the second order is the one the queue named');
+ok(q.queue.join() === startRound(t0, 'sate', low).queue.join(), 'and serving does not rewrite the queue');
 
 console.log(`✓ buffet: ${n} checks passed`);
