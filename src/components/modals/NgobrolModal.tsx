@@ -11,8 +11,8 @@ const { bride: BRIDE, groom: GROOM } = ngobrol.names;
 const NAME: Record<Speaker, string> = { bride: BRIDE, groom: GROOM, both: `${BRIDE} & ${GROOM}` };
 const TINT: Record<Speaker, string> = { bride: 'text-rose-700', groom: 'text-emerald-500', both: 'text-gold-900' };
 
-/** Head crops of couple_pelaminan.jpg (1200 x 896): x, y, side. */
-const FACE = { groom: [430, 252, 140], bride: [627, 278, 140] } as const;
+/** Head crops of couple_pelaminan.png (900 x 672): x, y, side. */
+const FACE = { groom: [323, 189, 105], bride: [470, 209, 105] } as const;
 
 /** The pause before a line lands. A punchline that arrives instantly is not a punchline. */
 const TYPING_MS = { q: 650, r: 1100 } as const;

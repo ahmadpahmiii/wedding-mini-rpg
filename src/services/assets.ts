@@ -1,20 +1,23 @@
 /**
  * Asset preloading, with the checkerboard fix.
  *
- * guest_characters_spritesheet.jpg and couple_pelaminan.jpg are JPEGs with the
- * grey/white "transparency" checkerboard painted into the pixels — there is no
- * alpha channel. Drawn straight to canvas, every character sits on a grid.
+ * guest_characters_spritesheet.jpg is a JPEG with the grey/white
+ * "transparency" checkerboard painted into the pixels — there is no alpha
+ * channel. Drawn straight to canvas, every character sits on a grid.
  *
  * We chroma-key it once, here, while the preloader is already on screen: a
- * flood fill inward from the border removes connected background only, so the
- * bride's white dress and the groom's white kopyah survive because they are
- * enclosed by the character.
+ * flood fill inward from the border removes connected background only. The
+ * couple's portrait is not keyed here: this loose test also took the bride's
+ * hijab and veil, so it is cut properly offline (couple_pelaminan.png).
  */
 
 export interface LoadedAssets {
   map: ImageBitmap;
   sprites: ImageBitmap;
   couple: ImageBitmap;
+  /** The couple as standing chibi characters, 2 cols × 4 rows of 150×224 cells.
+   *  Rows: 0 standing, 1 peace, 2 finger heart, 3 waving. Col 0 groom, col 1 bride. */
+  coupleStand: ImageBitmap;
 }
 
 const BG_MAX_SAT = 26;  // checkerboard greys are neutral; skin and cloth are not
@@ -81,28 +84,43 @@ async function loadBitmap(url: string, onBytes: (n: number) => void): Promise<Im
 
 export async function preloadAssets(onProgress: (pct: number) => void): Promise<LoadedAssets> {
   // Rough weights so the bar moves proportionally to real work, not file count.
-  const total = 613_238 + 743_810 + 746_864;
+  const total = 560_568 + 743_810 + 627_321 + 211_900;
   let done = 0;
   const bump = (n: number) => {
     done += n;
     onProgress(Math.min(0.92, done / total));
   };
 
-  const [map, rawSprites, rawCouple] = await Promise.all([
-    loadBitmap('/assets/map/world_map_base.jpg', bump),
+  // The couple comes pre-cut (scripts/prep-art.swift). Keyed here like the
+  // sprites, the bride's white hijab and veil were cut away with the background.
+  const [map, rawSprites, couple, coupleStand] = await Promise.all([
+    loadBitmap('/assets/map/world_map_v2.jpg', bump),
     loadBitmap('/assets/characters/guest_characters_spritesheet.jpg', bump),
-    loadBitmap('/assets/characters/couple_pelaminan.jpg', bump),
+    loadBitmap('/assets/characters/couple_pelaminan.png', bump),
+    loadBitmap('/assets/photobooth/couple.png', bump),
   ]);
 
   // Yield a frame so the bar paints before the (blocking) pixel pass.
   await new Promise(requestAnimationFrame);
   const sprites = await createImageBitmap(keyOutCheckerboard(rawSprites));
-  onProgress(0.97);
-  const couple = await createImageBitmap(keyOutCheckerboard(rawCouple));
 
   await document.fonts.ready.catch(() => undefined);
   onProgress(1);
-  return { map, sprites, couple };
+  return { map, sprites, couple, coupleStand };
+}
+
+/**
+ * An outfit's own sheet, loaded once the guest has picked it. These already
+ * carry real transparency, so there is no keying. Null on any failure: the
+ * guest keeps the base body rather than losing their character.
+ */
+export async function loadSheet(url: string): Promise<ImageBitmap | null> {
+  try {
+    const res = await fetch(url);
+    return res.ok ? await createImageBitmap(await res.blob()) : null;
+  } catch {
+    return null;
+  }
 }
 
 /** Spritesheet is 8 columns x 4 rows at 150x224 — NOT the 8x8/150x112 in prd.md. */

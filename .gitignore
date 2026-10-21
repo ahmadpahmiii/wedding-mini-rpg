@@ -16,3 +16,12 @@ wedding.local.json
 prd.md
 prompt.md
 goals.md
+
+# Raw art inputs and references. scripts/prep-art.swift turns these into the
+# sprites under public/assets, and those are what the site ships — no reason
+# to carry 27MB of PNG intermediates in a public repo.
+art/in/
+art/ref/
+
+# Per-session editor state
+.claude/checkpoints/

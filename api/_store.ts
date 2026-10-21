@@ -93,13 +93,19 @@ function toRow(r: Record<string, unknown>): WishRow {
   };
 }
 
-export async function listWishes(db: Db, limit = 200): Promise<WishRow[]> {
+/** What anyone with the link may read. Party size is for the couple (rsvp_summary), not the other guests. */
+export type PublicWish = Omit<WishRow, 'guests'>;
+
+export async function listWishes(db: Db, limit = 200): Promise<PublicWish[]> {
   const { rows } = await db.query(
-    `select id, name, message, attending, guests, sticker, gender, created_at
+    `select id, name, message, attending, sticker, gender, created_at
        from wishes order by created_at desc limit $1`,
     [Math.min(Math.max(limit, 1), 500)],
   );
-  return rows.map(toRow);
+  return rows.map((r) => {
+    const { guests: _, ...w } = toRow(r);
+    return w;
+  });
 }
 
 /** True when this sender has already posted RATE_MAX times in the window. */

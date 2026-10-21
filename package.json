@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && npm run check && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "check": "node scripts/check-config.mjs && node scripts/check-map.mjs && node scripts/check-api.mjs && node scripts/check-wishes.mjs",
+    "check": "node scripts/check-config.mjs && node scripts/check-map.mjs && node scripts/check-api.mjs && node scripts/check-wishes.mjs && node scripts/check-progress.mjs && node scripts/check-buffet.mjs && node scripts/check-travel.mjs && node scripts/check-meet.mjs && node scripts/check-photobooth.mjs && node scripts/check-text.mjs",
     "check:api": "node scripts/check-api.mjs",
     "dev:api": "node scripts/dev-api.mjs",
     "db:migrate": "node scripts/migrate.mjs",

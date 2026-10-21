@@ -163,9 +163,15 @@ export default function RsvpModal({ wishes, defaultName, gender, onSubmit, onClo
           )}
         </div>
 
-        <button type="button" onClick={() => void submit()} disabled={sending} className="btn-primary w-full">
-          {sending ? 'MENGIRIM…' : 'KIRIM UCAPAN & RSVP'}
-        </button>
+        <div className="grid gap-2">
+          <button type="button" onClick={() => void submit()} disabled={sending} className="btn-primary w-full">
+            {sending ? 'MENGIRIM…' : 'KIRIM UCAPAN & RSVP'}
+          </button>
+          {/* Sending is the consent to both, so it is said before, not after. */}
+          <p className="m-0 text-[11px] leading-4 text-ink-muted">
+            Nama dan ucapanmu akan tampil untuk tamu lain. Kalau kamu akan hadir, karaktermu juga ikut berjalan di taman.
+          </p>
+        </div>
 
         <section>
           <div className="mb-3 flex items-baseline justify-between">

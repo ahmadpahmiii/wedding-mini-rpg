@@ -1,78 +1,68 @@
 import { useState } from 'react';
 import { audio } from '../services/audio';
-import { CELL_W, CELL_H, type LoadedAssets } from '../services/assets';
-import type { Gender } from '../game/types';
+import { OUTFITS, OUTFIT_PREVIEWS, type OutfitId } from '../data/outfits';
 
-interface Props { assets: LoadedAssets; initialName: string; onStart: (gender: Gender, name: string) => void }
+interface Props { initialName: string; initialOutfit: OutfitId; onStart: (outfit: OutfitId, name: string) => void }
 
-const OPTIONS: { id: Gender; label: string; sub: string; row: number }[] = [
-  { id: 'pria', label: 'PRIA', sub: 'Batik & Peci', row: 0 },
-  { id: 'wanita', label: 'WANITA', sub: 'Kebaya & Sanggul', row: 2 },
-];
+/** One front frame from the previews strip: 150 x 224 cells, in OUTFITS order. */
+const PREVIEW_W = 60;
+const PREVIEW_H = Math.round((224 / 150) * PREVIEW_W);
 
-/** Draws one idle cell straight from the keyed spritesheet, so the choice shows the real body. */
-function SpritePreview({ assets, row }: { assets: LoadedAssets; row: number }) {
-  return (
-    <canvas
-      width={CELL_W}
-      height={CELL_H}
-      className="mx-auto mb-2 h-[112px] w-[75px] [image-rendering:pixelated]"
-      ref={(el) => {
-        const ctx = el?.getContext('2d');
-        if (!ctx) return;
-        ctx.clearRect(0, 0, CELL_W, CELL_H);
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(assets.sprites, 0, row * CELL_H, CELL_W, CELL_H, 0, 0, CELL_W, CELL_H);
-      }}
-    />
-  );
-}
-
-export default function CharacterSelect({ assets, initialName, onStart }: Props) {
-  const [gender, setGender] = useState<Gender>('pria');
+export default function CharacterSelect({ initialName, initialOutfit, onStart }: Props) {
+  const [outfit, setOutfit] = useState<OutfitId>(initialOutfit);
   const [name, setName] = useState(initialName);
 
   const start = () => {
     audio.play('levelup');
-    onStart(gender, name.trim() || 'Tamu Undangan');
+    onStart(outfit, name.trim() || 'Tamu Undangan');
   };
 
   return (
     <div className="relative grid h-full place-items-center overflow-hidden bg-wood-900 p-5">
       <div
         aria-hidden
-        className="absolute inset-0 bg-[url('/assets/map/world_map_base.jpg')] bg-cover bg-top brightness-[.42]"
+        className="absolute inset-0 bg-[url('/assets/map/world_map_v2.jpg')] bg-cover bg-top brightness-[.42]"
       />
       <div
         className="relative w-full max-w-[360px] rounded-lg border-4 border-gold-500 bg-parchment-200
                    px-5 py-6 text-center shadow-modal"
         style={{ animation: 'wq-rise 320ms ease-out' }}
       >
-        <h1 className="mb-2 font-display text-[26px] font-bold text-ink-900">Pilih karakter kamu</h1>
-        <p className="mb-5 text-sm leading-[22px] text-ink-600">
-          Yuk jalan-jalan keliling peta pernikahan kami dan sapa pasangan.
+        <h1 className="mb-2 font-display text-[26px] font-bold text-ink-900">Pilih baju kamu</h1>
+        <p className="mb-4 text-sm leading-[22px] text-ink-600">
+          Semua baju gratis. Yuk jalan-jalan keliling peta pernikahan kami dan sapa pasangan.
         </p>
 
-        <div className="mb-5 grid grid-cols-2 gap-3">
-          {OPTIONS.map((o) => {
-            const on = gender === o.id;
+        {/* Every outfit is free and open to everyone; nothing is picked for the guest from their name. */}
+        <div className="mb-5 grid grid-cols-3 gap-2" role="group" aria-label="Pilih baju">
+          {OUTFITS.map((o, i) => {
+            const on = outfit === o.id;
             return (
               <button
                 key={o.id}
                 type="button"
                 aria-pressed={on}
-                onClick={() => { audio.play('click'); setGender(o.id); }}
-                className={`relative rounded-md bg-parchment-100 px-2 py-3 ${
-                  on ? 'border-[3px] border-gold-500 opacity-100 shadow-raised-gold' : 'border-2 border-wood-400 opacity-75'
+                aria-label={o.sub}
+                onClick={() => { audio.play('click'); setOutfit(o.id); }}
+                className={`relative flex flex-col items-center rounded-md bg-parchment-100 px-1 pb-2 pt-3 ${
+                  on ? 'border-[3px] border-gold-500 opacity-100 shadow-raised-gold' : 'border-2 border-wood-400 opacity-80'
                 }`}
               >
                 {on && (
-                  <span className="absolute -right-[9px] -top-[9px] grid h-6 w-6 place-items-center rounded-full
-                                   border-2 border-wood-800 bg-wax-500 text-xs text-parchment-100">✓</span>
+                  <span className="absolute -right-[8px] -top-[8px] grid h-5 w-5 place-items-center rounded-full
+                                   border-2 border-wood-800 bg-wax-500 text-[10px] text-parchment-100">✓</span>
                 )}
-                <SpritePreview assets={assets} row={o.row} />
-                <b className="block font-pixel text-[9px] text-ink-900">{o.label}</b>
-                <span className="mt-[5px] block text-[11px] text-ink-muted">{o.sub}</span>
+                <span
+                  aria-hidden
+                  className="mx-auto mb-1 block"
+                  style={{
+                    width: PREVIEW_W,
+                    height: PREVIEW_H,
+                    background: `url(${OUTFIT_PREVIEWS}) ${-i * PREVIEW_W}px 0 / ${PREVIEW_W * OUTFITS.length}px ${PREVIEW_H}px no-repeat`,
+                  }}
+                />
+                <b className="block font-pixel text-[8px] text-ink-900">{o.label}</b>
+                <span className="mt-1 block text-[10px] leading-3 text-ink-muted">{o.sub}</span>
               </button>
             );
           })}
@@ -88,6 +78,13 @@ export default function CharacterSelect({ assets, initialName, onStart }: Props)
           onKeyDown={(e) => { if (e.key === 'Enter') start(); }}
         />
         <button type="button" onClick={start} className="btn-primary w-full">MASUKI PETA DUNIA!</button>
+        {/* The whole invitation without the game, for anyone who would rather just read it. */}
+        <a
+          href={`/undangan/${window.location.search}`}
+          className="mt-4 inline-flex min-h-tap items-center text-[13px] font-semibold text-ink-600 underline underline-offset-4"
+        >
+          Lihat undangan biasa, tanpa game
+        </a>
       </div>
     </div>
   );

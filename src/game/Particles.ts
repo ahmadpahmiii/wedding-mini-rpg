@@ -8,6 +8,7 @@ const SOURCES = [
   { x: 384, y: 640,  n: 24, color: '#7ec8e3', kind: 'spray' as const },
   { x: 600, y: 850,  n: 20, color: '#f7c8d8', kind: 'petal' as const },
   { x: 384, y: 1000, n: 12, color: '#fdf6e2', kind: 'dust' as const },
+  { x: 612, y: 498,  n: 8,  color: '#fdf6e2', kind: 'steam' as const }, // the bakso pot at the buffet
 ];
 
 export class Particles {
@@ -28,8 +29,8 @@ export class Particles {
   }
 
   private make(s: (typeof SOURCES)[number], startLife = 0): P {
-    const spread = s.kind === 'spray' ? 34 : 60;
-    const max = s.kind === 'spray' ? 900 : 4200;
+    const spread = s.kind === 'spray' ? 34 : s.kind === 'steam' ? 14 : 60;
+    const max = s.kind === 'spray' ? 900 : s.kind === 'steam' ? 1600 : 4200;
     const base = {
       x: s.x + (Math.random() - 0.5) * spread,
       y: s.y + (Math.random() - 0.5) * (s.kind === 'petal' ? 90 : 24),
@@ -43,6 +44,7 @@ export class Particles {
       case 'spray':   return { ...base, vx: (Math.random() - 0.5) * 0.5, vy: -0.55 - Math.random() * 0.4 };
       case 'sparkle': return { ...base, vx: (Math.random() - 0.5) * 0.12, vy: -0.16 - Math.random() * 0.12 };
       case 'petal':   return { ...base, vx: (Math.random() - 0.5) * 0.3, vy: 0.14 + Math.random() * 0.18 };
+      case 'steam':   return { ...base, y: s.y + Math.random() * 6, vx: (Math.random() - 0.5) * 0.1, vy: -0.22 - Math.random() * 0.1 };
       default:        return { ...base, vx: (Math.random() - 0.5) * 0.08, vy: -0.05 };
     }
   }
@@ -82,7 +84,7 @@ export function detectProfile(): DeviceProfile {
   const nav = navigator as Navigator & { deviceMemory?: number };
   const weak = (navigator.hardwareConcurrency ?? 8) <= 4 && (nav.deviceMemory ?? 8) <= 4;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduced) return { tier: 'low', particleScale: 0, sparkles: false, shadows: false };
-  if (weak) return { tier: 'low', particleScale: 0.3, sparkles: false, shadows: false };
-  return { tier: 'high', particleScale: 1, sparkles: true, shadows: true };
+  if (reduced) return { tier: 'low', reduced, particleScale: 0, sparkles: false, shadows: false };
+  if (weak) return { tier: 'low', reduced, particleScale: 0.3, sparkles: false, shadows: false };
+  return { tier: 'high', reduced, particleScale: 1, sparkles: true, shadows: true };
 }

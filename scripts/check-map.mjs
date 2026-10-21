@@ -9,7 +9,7 @@
  */
 import './_register-ts.mjs';
 import assert from 'node:assert/strict';
-import { LANDMARKS, SPAWN, blocked, nearest, WORLD_W, WORLD_H } from '../src/game/landmarks.ts';
+import { LANDMARKS, SPAWN, BOUNDS, blocked, camClamp, nearest, WORLD_W, WORLD_H } from '../src/game/landmarks.ts';
 
 let checks = 0;
 const ok = (cond, msg) => { assert.ok(cond, msg); checks++; };
@@ -43,12 +43,17 @@ for (const a of LANDMARKS) {
   }
 }
 
+// Keys 1-7 open LANDMARKS[0..6], so each must be a different destination.
 const targets = new Set(LANDMARKS.map((l) => l.target));
-ok(targets.size === 5, 'five destinations — Galeri, Cerita, Sapa Tamu and Hadiah were removed by decision');
-ok(LANDMARKS.length === 6, 'six landmarks — Ngobrol opens from both the gazebo and the old gift table');
-// Keys 1-5 open LANDMARKS[0..4], so those five must cover every destination once.
-ok(new Set(LANDMARKS.slice(0, 5).map((l) => l.target)).size === 5, 'keys 1-5 reach all five destinations');
-ok(LANDMARKS.find((l) => l.target === 'ngobrol')?.id === 'gazebo', 'the nav walks to the gazebo, not the chests');
+ok(LANDMARKS.length === 7 && targets.size === 7, 'seven landmarks, one destination each — keys 1-7 reach them all');
+// Desktop locks the camera's x to 144-624: what a guest must see or stand on lives inside it.
+{
+  const buffet = LANDMARKS.find((l) => l.target === 'buffet');
+  const half = ((buffet.label.length + 2) * 8 + 16) / 2;
+  ok(buffet.x + half <= 624 && buffet.sx <= 610, 'the buffet sign and stand point are on screen on desktop');
+}
+ok(LANDMARKS.find((l) => l.target === 'hadiah')?.id === 'meja-hadiah', 'the painted gift table hands out the gifts');
+ok(LANDMARKS.find((l) => l.target === 'pasangan')?.id === 'pelaminan', 'gifts are delivered to the couple at the pelaminan');
 
 // The guest roster is fixed at three men and two women.
 const { NPC_MALE, NPC_FEMALE, chooseGuests } = await import('../src/game/roster.ts');
@@ -177,7 +182,7 @@ ok(TAP_REACH * 2 >= 88, 'tap target clears the 44px minimum on both sides of cen
     ...LANDMARKS.map((l) => ({ id: l.label, x: l.sx, y: l.sy }))];
 
   const walk = (from, to, cap = 2500) => {
-    const p = new Player({ x: from.x, y: from.y }, 'pria');
+    const p = new Player({ x: from.x, y: from.y });
     p.walkTo({ x: to.x, y: to.y });
     for (let i = 0; i < cap; i++) {
       p.update();
@@ -221,13 +226,13 @@ ok(TAP_REACH * 2 >= 88, 'tap target clears the 44px minimum on both sides of cen
     return { inPlace, flips };
   };
   {
-    const p = new Player({ x: 384, y: 830 }, 'pria');
+    const p = new Player({ x: 384, y: 830 });
     const r = watch(p, 300, (pl) => { pl.stick = { x: 0, y: -1 }; });
     ok(r.inPlace === 0, `joystick pushed into the fountain does not stride on the spot (${r.inPlace} frames)`);
     ok(p.facing === 'up', 'and the guest faces the fountain they are pushing into');
   }
   {
-    const p = new Player({ x: 384, y: 1100 }, 'pria');
+    const p = new Player({ x: 384, y: 1100 });
     const r = watch(p, 120, (pl, i) => {
       const a = Math.PI / 4 + Math.sin(i * 1.7) * 0.08; // a thumb wobbling on the diagonal
       pl.stick = { x: Math.cos(a) * 0.9, y: -Math.sin(a) * 0.9 };
@@ -235,7 +240,7 @@ ok(TAP_REACH * 2 >= 88, 'tap target clears the 44px minimum on both sides of cen
     ok(r.flips <= 1, `a wobbling diagonal does not flicker the sprite (${r.flips} facing changes in 2s)`);
   }
   {
-    const p = new Player({ x: SPAWN.x, y: SPAWN.y }, 'pria');
+    const p = new Player({ x: SPAWN.x, y: SPAWN.y });
     p.walkTo({ x: 384, y: 680 }); // the middle of the fountain
     ok(!blocked(p.destination.x, p.destination.y), 'a tap on scenery puts the marker on open ground');
     ok(p.destination.y > 680, 'tapping the fountain from below stops on the near side, not round the back');
@@ -263,5 +268,66 @@ ok(TAP_REACH * 2 >= 88, 'tap target clears the 44px minimum on both sides of cen
   const acara = LANDMARKS.find((l) => l.target === 'acara');
   ok(acara.sx > 110 && acara.sx < 216 && acara.sy > 610 && acara.sy < 660, 'ACARA stands at the foot of the stage steps');
 }
+
+// Outfits: each sheet must be where the code looks, in the base layout the
+// renderer slices (8 x 2 cells of 150 x 224), and the picker's strip must hold
+// one frame per outfit. A sheet dropped in at the wrong size draws garbage.
+{
+  const { readFileSync } = await import('node:fs');
+  const { OUTFITS, OUTFIT_PREVIEWS, outfitOf, baseRow } = await import('../src/data/outfits.ts');
+  const png = (url) => {
+    const b = readFileSync(`public${url}`);
+    return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+  };
+  ok(OUTFITS.length === 6 && new Set(OUTFITS.map((o) => o.id)).size === 6, 'six outfits');
+  ok(OUTFITS.filter((o) => o.body === 'pria').length === 3, 'three on each body');
+  for (const o of OUTFITS.filter((o) => o.sheet)) {
+    const { w, h } = png(o.sheet);
+    ok(w === 1200 && h === 448, `${o.id}: sheet is 1200x448, got ${w}x${h}`);
+  }
+  const strip = png(OUTFIT_PREVIEWS);
+  ok(strip.w === 150 * OUTFITS.length && strip.h === 224, `previews strip is one 150x224 frame per outfit, got ${strip.w}x${strip.h}`);
+  ok(outfitOf('nope').id === 'batik', 'an unknown outfit falls back to the first');
+  ok(baseRow('pria') === 0 && baseRow('wanita') === 2, 'base bodies start at rows 0 and 2');
+}
+
+// Photobooth and travel crop props and obstacles out of their sheets by hand-
+// measured rectangles. A sheet regenerated at another size would crop garbage.
+{
+  const { readFileSync, existsSync } = await import('node:fs');
+  const dims = (url) => { const b = readFileSync(`public${url}`); return [b.readUInt32BE(16), b.readUInt32BE(20)]; };
+  const inside = ([x, y, w, h], [W, H]) => x >= 0 && y >= 0 && x + w <= W && y + h <= H;
+
+  const { ACCESSORIES, ACCESSORY_SHEET, ACCESSORY_SHEET_SIZE, BACKGROUNDS } = await import('../src/game/photobooth.ts');
+  const acc = dims(ACCESSORY_SHEET);
+  ok(acc[0] === ACCESSORY_SHEET_SIZE[0] && acc[1] === ACCESSORY_SHEET_SIZE[1], `accessory sheet is ${ACCESSORY_SHEET_SIZE.join('x')}, got ${acc.join('x')}`);
+  ok(ACCESSORIES.filter((a) => a.src).length === 6 && ACCESSORIES.every((a) => !a.src || inside(a.src, acc)), 'six props, each cut from inside the sheet');
+  ok(BACKGROUNDS.length === 3 && BACKGROUNDS.every((b) => existsSync(`public${b.src}`)), 'three photobooth backgrounds, all present');
+
+  const { OBSTACLES } = await import('../src/game/travel.ts');
+  const obs = dims('/assets/travel/obstacles.png');
+  ok(OBSTACLES.every((o) => inside(o.src, obs)), 'every travel obstacle is cut from inside its sheet');
+}
+
+
+// The camera must keep the guest on screen at every stage width. It once
+// locked to the centre of the map on anything 768px wide or more, while the
+// stage itself caps at 480 — so on a laptop you could walk your own character
+// clean off the edge of the box, and the photobox sat outside the view for good.
+const STAGE_MAX = 480; // tailwind.config.js: maxWidth.stage
+for (const view of [320, 360, 375, 414, 480]) {
+  for (const x of [BOUNDS.minX, 144, 384, 624, BOUNDS.maxX]) {
+    const cam = camClamp(x - view / 2, view, WORLD_W);
+    ok(cam >= 0 && cam <= WORLD_W - view, `camera stays on the map (view ${view}, x ${x})`);
+    const screenX = x - cam;
+    ok(screenX >= 0 && screenX <= view, `guest at x=${x} stays on screen (view ${view})`);
+  }
+  for (const lm of LANDMARKS) {
+    const cam = camClamp(lm.sx - view / 2, view, WORLD_W);
+    ok(lm.sx - cam >= 0 && lm.sx - cam <= view, `${lm.id}: stand point reachable on a ${view}px stage`);
+    ok(lm.x - cam >= -45 && lm.x - cam <= view + 45, `${lm.id}: sign readable on a ${view}px stage`);
+  }
+}
+ok(STAGE_MAX < WORLD_W, 'the stage is narrower than the map, so the camera has to follow');
 
 console.log(`✓ map geometry: ${checks} checks passed`);

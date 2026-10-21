@@ -46,6 +46,7 @@ ok(typeof saved.at === 'number' && saved.at > 0, 'created_at comes back as a tim
 
 let list = await listWishes(db);
 ok(list.length === 1 && list[0].id === saved.id, 'the wish is listed');
+ok(!('guests' in list[0]), 'the public list never carries a party size');
 
 // --- newest first, which the feed relies on
 await db.query("insert into wishes (name, message, attending, guests, gender, created_at) values ('Older','x',true,1,'pria', now() - interval '1 hour')");

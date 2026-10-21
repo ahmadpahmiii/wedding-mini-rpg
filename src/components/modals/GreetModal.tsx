@@ -14,7 +14,7 @@ export default function GreetModal({ wish, onClose }: { wish: Wish; onClose: () 
           <img src={stickerUrl(wish.sticker)} alt=""
                className="h-24 w-24 rounded-md border-[1.5px] border-wood-400 bg-parchment-300 object-contain p-2" />
         )}
-        <AttendanceChip attending={wish.attending} guests={wish.guests} />
+        <AttendanceChip attending={wish.attending} />
       </div>
     </Modal>
   );

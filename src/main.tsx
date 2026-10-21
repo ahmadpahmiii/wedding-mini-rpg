@@ -1,6 +1,7 @@
 import { Component, StrictMode, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import { ToastProvider } from './hooks/useToast';
 import './index.css';
 
 /**
@@ -27,7 +28,9 @@ class Rescue extends Component<{ children: ReactNode }, { failed: boolean }> {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Rescue>
-      <App />
+      <ToastProvider>
+        <App />
+      </ToastProvider>
     </Rescue>
   </StrictMode>,
 );

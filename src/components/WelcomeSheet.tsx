@@ -4,6 +4,7 @@ const ROWS = [
   { icon: '🕹️', text: 'Geser joystick di pojok kiri bawah untuk berjalan. Komputer: pakai WASD atau tombol panah.' },
   { icon: '🪧', text: 'Dekati papan kayu di setiap titik untuk membuka bagiannya.' },
   { icon: '📜', text: 'Buru-buru? Ketuk menu di bawah untuk langsung membuka bagian apa pun.' },
+  { icon: '⭐', text: 'Ketuk MISI di atas untuk misi kecil: salaman dengan mempelai, antar hadiah, dan lainnya.' },
 ];
 
 export default function WelcomeSheet({ onClose }: { onClose: () => void }) {

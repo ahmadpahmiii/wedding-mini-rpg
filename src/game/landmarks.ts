@@ -4,7 +4,8 @@ export const WORLD_W = 768;
 export const WORLD_H = 1376;
 
 /**
- * Measured off public/assets/map/world_map_base.jpg, not copied from prd.md —
+ * Measured off public/assets/map/world_map_base.jpg (world_map_v2.jpg is the
+ * same painting with the buffet in the tent), not copied from prd.md —
  * six of the eight coordinates documented there do not match the painting.
  */
 // The couple are painted into the map at the pelaminan now, so the stand point
@@ -19,13 +20,16 @@ export const LANDMARKS: Landmark[] = [
   // ucapan and RSVP belong. The fountain is scenery — it has no modal of its
   // own since Sapa Tamu was dropped, but it still blocks and still sprays.
   { id: 'pohon-harapan', label: 'UCAPAN & RSVP', target: 'rsvp',      x: 600, y: 930,  sx: 520, sy: 958,  radius: 78, signOffset: 44 },
-  // Ngobrol has two doors. The lovestory gazebo is a place to sit and talk, so
-  // it comes first: the nav walks to the first landmark with a target, and
-  // keys 1-5 follow this order. The gift table lost its gifts but kept its
-  // painted chests, so it stays a way in rather than a dead prop.
+  // The lovestory gazebo is a place to sit and talk. Keys 1-6 follow this order.
   { id: 'gazebo',        label: 'NGOBROL',  target: 'ngobrol',   x: 165, y: 820,  sx: 165, sy: 966,  radius: 78, signOffset: 44 },
   { id: 'kios-photobox', label: 'PHOTOBOX', target: 'photobox',  x: 650, y: 1065, sx: 628, sy: 1175, radius: 78, signOffset: 52 },
-  { id: 'meja-peti',     label: 'NGOBROL',  target: 'ngobrol',   x: 140, y: 1055, sx: 200, sy: 1160, radius: 78, signOffset: 40 },
+  // The painted gift table, with its chests and wrapped box, hands out the
+  // virtual gift a guest carries up to the pelaminan.
+  { id: 'meja-hadiah',   label: 'HADIAH',   target: 'hadiah',    x: 140, y: 1055, sx: 200, sy: 1160, radius: 78, signOffset: 40 },
+  // The gallery tent, repainted as the buffet (world_map_v2.jpg). Desktop locks
+  // the camera to x 144-624, so the sign and the stand point keep to the
+  // tent's left side rather than its centre, which is off that screen.
+  { id: 'prasmanan',     label: 'PRASMANAN', target: 'buffet',   x: 572, y: 500,  sx: 600, sy: 640,  radius: 78, signOffset: 70 },
 ];
 
 /**
@@ -40,7 +44,7 @@ export const BLOCKERS: readonly [number, number, number, number][] = [
   [96, 60, 576, 200],   // pelaminan platform + carved backdrop
   [20, 370, 230, 190],  // gamelan gazebo floor
   [278, 572, 212, 220], // fountain basin, extended down so a 76px sprite stops clear of the water
-  [545, 360, 223, 170], // gallery tent (scenery only now)
+  [545, 360, 223, 242], // buffet tent, down to the table's gold skirt
   [58, 745, 210, 185],  // lovestory gazebo
   [566, 880, 70, 80],   // wishing tree trunk — the canopy is walk-behind
   [20, 990, 250, 130],  // gift table, chests and all
@@ -54,6 +58,14 @@ export const BLOCKERS: readonly [number, number, number, number][] = [
  * does: routed through a gap the player is clamped out of, it aims at a
  * waypoint that can never be reached and the guest stops dead.
  */
+/**
+ * Where the camera sits on one axis: follow `want`, but never past the edge of
+ * the painting, so the stage is always full of map.
+ */
+export function camClamp(want: number, view: number, world: number): number {
+  return Math.max(0, Math.min(want, world - view));
+}
+
 export const BOUNDS = { minX: 16, maxX: WORLD_W - 16, minY: 120, maxY: WORLD_H - 26 };
 
 export function inBounds(x: number, y: number): boolean {

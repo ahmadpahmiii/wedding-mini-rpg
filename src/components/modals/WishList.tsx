@@ -25,7 +25,7 @@ export default function WishList({ wishes }: { wishes: Wish[] }) {
               className="h-16 w-16 rounded-md border-[1.5px] border-wood-400 bg-parchment-300 object-contain p-1"
             />
           )}
-          <AttendanceChip attending={w.attending} guests={w.guests} />
+          <AttendanceChip attending={w.attending} />
         </article>
       ))}
     </div>

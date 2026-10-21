@@ -212,7 +212,8 @@ function wishCard(w: Wish, i: number): HTMLElement {
   const top = h('div', 'w-top');
   top.append(h('p', 'w-name', w.name), h('time', 'w-time', relativeTime(w.at)));
   const foot = h('div', 'w-foot');
-  foot.append(h('span', w.attending ? 'w-chip' : 'w-chip no', w.attending ? `Hadir · ${w.guests} orang` : 'Tidak hadir'));
+  // The RSVP answer, not proof of arrival; the party size stays with the couple.
+  foot.append(h('span', w.attending ? 'w-chip' : 'w-chip no', w.attending ? 'Akan hadir' : 'Tidak hadir'));
   if (w.sticker) {
     const img = h('img', 'w-sticker') as HTMLImageElement;
     img.src = stickerUrl(w.sticker);

@@ -1,20 +1,20 @@
 import { CELL_W, CELL_H } from '../services/assets';
-import type { Facing, Gender } from './types';
+import type { Facing } from './types';
 
 /** On-screen size. The cell is 150x224; the painted guests on the map are small. */
 export const DRAW_H = 76;
 export const DRAW_W = Math.round((CELL_W / CELL_H) * DRAW_H);
 
 /**
- * Sheet layout: 8 cols x 4 rows. Rows 0-1 male, rows 2-3 female.
+ * A body is two rows of 8 cells, starting at `base`: rows 0-1 (pria) or 2-3
+ * (wanita) of the base sheet, or rows 0-1 of an outfit's own sheet.
  * Row N   — front-facing and back-facing poses
  * Row N+1 — the side walk cycle
  * Side frames face LEFT in the art, so "right" is the same frames mirrored.
  */
 interface FrameSet { row: number; cols: number[]; flip: boolean }
 
-export function frameSet(gender: Gender, facing: Facing): FrameSet {
-  const base = gender === 'pria' ? 0 : 2;
+export function frameSet(base: number, facing: Facing): FrameSet {
   switch (facing) {
     case 'down':  return { row: base, cols: [0, 1], flip: false };
     case 'up':    return { row: base, cols: [4, 5], flip: false };
@@ -25,15 +25,15 @@ export function frameSet(gender: Gender, facing: Facing): FrameSet {
 
 export function drawSprite(
   ctx: CanvasRenderingContext2D,
-  sheet: ImageBitmap,
-  gender: Gender,
+  sheet: CanvasImageSource,
+  base: number,
   facing: Facing,
   moving: boolean,
   clock: number,
   sx: number,
   sy: number,
 ): void {
-  const { row, cols, flip } = frameSet(gender, facing);
+  const { row, cols, flip } = frameSet(base, facing);
   // 8fps walk cycle; a stopped character holds the first frame.
   const col = moving ? cols[Math.floor(clock / 125) % cols.length] : cols[0];
   const x = Math.round(sx - DRAW_W / 2);

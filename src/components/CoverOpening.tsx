@@ -54,7 +54,7 @@ export default function CoverOpening({ guestName, onOpened }: Props) {
     <div className="relative grid h-full place-items-center overflow-hidden bg-wood-900 p-5">
       <div
         aria-hidden
-        className="absolute inset-0 bg-[url('/assets/map/world_map_base.jpg')] bg-cover bg-top transition-[filter] duration-700"
+        className="absolute inset-0 bg-[url('/assets/map/world_map_v2.jpg')] bg-cover bg-top transition-[filter] duration-700"
         style={{ filter: breaking ? 'blur(0px) brightness(.55)' : 'blur(8px) brightness(.45)' }}
       />
       <div

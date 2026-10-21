@@ -4,7 +4,7 @@
  * SFX are generated with the Web Audio API rather than loaded — seven short
  * files would cost more bytes and more round-trips than the ~60 lines below.
  */
-type Sfx = 'seal' | 'levelup' | 'open' | 'close' | 'click' | 'camera' | 'success';
+type Sfx = 'seal' | 'levelup' | 'open' | 'close' | 'click' | 'camera' | 'success' | 'blessing' | 'warmth';
 
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -202,6 +202,8 @@ class AudioManager {
       case 'click':   beep(880, 0, 0.04, 'square', 0.22); break;
       case 'camera':  noise(0, 0.05, 0.4); beep(1200, 0.03, 0.05, 'sine'); break;
       case 'success': [523, 659, 784].forEach((f, i) => beep(f, i * 0.05, 0.22, 'triangle')); break;
+      case 'blessing': [523, 659, 784].forEach((f, i) => beep(f, i * 0.08, 1.5, 'sine', 0.16)); beep(2000, 0.16, 1.3, 'sine', 0.03); break;
+      case 'warmth':  [440, 554].forEach((f) => beep(f, 0, 0.3, 'triangle', 0.2)); break;
     }
   }
 }

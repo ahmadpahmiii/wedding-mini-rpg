@@ -1,17 +1,19 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
 
-type Tone = 'ok' | 'info' | 'bad';
+/** `win` is a milestone. */
+type Tone = 'ok' | 'info' | 'bad' | 'win';
 interface ToastState { id: number; text: string; tone: Tone }
 
 const Ctx = createContext<(text: string, tone?: Tone) => void>(() => undefined);
 export const useToast = () => useContext(Ctx);
 
-const ICON: Record<Tone, string> = { ok: '✓', info: '💌', bad: '!' };
+const ICON: Record<Tone, string> = { ok: '✓', info: '💌', bad: '!', win: '★' };
 const RING: Record<Tone, string> = {
-  ok: 'border-gold-500', info: 'border-gold-500', bad: 'border-wax-500',
+  ok: 'border-gold-500', info: 'border-gold-500', bad: 'border-wax-500', win: 'border-gold-400',
 };
 const DISC: Record<Tone, string> = {
   ok: 'bg-emerald-500 text-parchment-100', info: 'bg-gold-500 text-wood-800', bad: 'bg-wax-500 text-parchment-100',
+  win: 'bg-gold-400 text-wood-800',
 };
 
 export function ToastProvider({ children }: { children: ReactNode }) {

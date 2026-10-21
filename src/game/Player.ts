@@ -1,6 +1,6 @@
 import { BOUNDS, blocked } from './landmarks';
 import { findPath } from './path';
-import type { Facing, Gender, Vec2 } from './types';
+import type { Facing, Vec2 } from './types';
 
 const SPEED = 2.6;          // px per 60Hz frame at full magnitude — ~12s to cross the map
 /** One 60Hz frame. Movement is scaled by dt against this, so a 120Hz phone does not walk twice as fast. */
@@ -14,7 +14,6 @@ export class Player {
   y: number;
   facing: Facing = 'up';
   moving = false;
-  gender: Gender;
 
   /** Joystick vector, -1..1 on each axis. */
   stick: Vec2 = { x: 0, y: 0 };
@@ -28,10 +27,9 @@ export class Player {
   private stalled = 0;
   private lastGap = Infinity;
 
-  constructor(spawn: Vec2, gender: Gender) {
+  constructor(spawn: Vec2) {
     this.x = spawn.x;
     this.y = spawn.y;
-    this.gender = gender;
   }
 
   /**
@@ -53,6 +51,12 @@ export class Player {
 
   /** Where the guest is ultimately headed, for the on-screen marker. */
   get destination(): Vec2 | null { return this.finalTarget; }
+
+  /** Drop any route and stand still: a scripted moment is taking over. */
+  halt(): void {
+    this.clearRoute();
+    this.moving = false;
+  }
 
   private clearRoute(): void {
     this.target = null;

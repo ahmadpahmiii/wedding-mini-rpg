@@ -67,6 +67,7 @@
 @keyframes wq-seal  { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
 @keyframes wq-bob   { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes wq-flash { from { opacity: 1; } to { opacity: 0; } }
+@keyframes wq-confetti { from { transform: translateY(0) rotate(0); } to { transform: translateY(460px) rotate(540deg); } }
 
 /* The envelope's own seal group. A CSS transform REPLACES the SVG transform
    attribute, so the group's own translate(250,170) must be re-supplied here

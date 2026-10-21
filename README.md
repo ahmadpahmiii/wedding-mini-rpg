@@ -9,7 +9,7 @@ Ada dua halaman:
 
 | Halaman | Isi |
 | --- | --- |
-| `/` | Game: peta taman, karakter, 5 tempat yang bisa didatangi |
+| `/` | Game: peta taman, karakter, 6 tempat yang bisa didatangi, misi kecil (salaman dengan mempelai, antar hadiah virtual) |
 | `/undangan/` | Undangan klasik yang di-scroll: amplop, ayat, profil mempelai, jadwal, countdown, form ucapan |
 
 Keduanya membaca data dari **satu file**: `wedding.json`. Kamu tidak perlu
@@ -281,7 +281,9 @@ kertas, jadi latar putih polos akan berbaur sendiri.
 | File | Ukuran | Dipakai untuk |
 | --- | --- | --- |
 | `map/world_map_base.jpg` | **768 × 1376** | Peta taman dari atas. Pelaminan, panggung, air mancur, gazebo, pohon harapan, kios photobox, dan meja hadiah dilukis langsung di gambar ini, termasuk pasangan di pelaminan |
+| `map/world_map_v2.jpg` | **768 × 1376** | Peta yang dipakai game: gambar di atas, dengan prasmanan di dalam tenda. Dibuat oleh `swift scripts/prep-art.swift` dari `art/in/` |
 | `characters/guest_characters_spritesheet.jpg` | 1200 × 896 | Karakter tamu (lihat di bawah) |
+| `characters/outfit_*.png` | 1200 × 448 | Empat baju tambahan (jas, koko, gamis, blus) dan `outfit_previews.png` untuk layar pilih baju. Dibuat oleh `swift scripts/prep-art.swift` dari `art/in/`; daftarnya di `src/data/outfits.ts` |
 | `characters/couple_pelaminan.jpg` | 1200 × 896 | Gambar pasangan di modal "Pasangan" & wajah di kuis Ngobrol |
 
 **Spritesheet tamu**: grid 8 kolom × 4 baris, tiap sel 150 × 224 px.
@@ -360,6 +362,13 @@ tidak ada di daftarnya.
 
 Daftar ucapan fiktif yang tampil saat database belum tersambung atau sedang
 tidak bisa dihubungi. Silakan ganti, atau kosongkan.
+
+### 4.7a Menu prasmanan (`src/game/buffet.ts`)
+
+Minigame "Racik Menu" di tenda prasmanan memakai dua resep contoh: Bakso
+Komplit dan Sate Kecap + Nasi. Ubah `RECIPES` agar sesuai menu kalian, tapi
+pakai bahan dari `INGREDIENTS` saja, karena tiap bahan butuh ikon di
+`public/assets/buffet/items.png`.
 
 ### 4.8 Membuat asset dengan AI (opsional)
 

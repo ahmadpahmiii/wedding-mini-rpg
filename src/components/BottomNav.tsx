@@ -3,7 +3,10 @@ import { audio } from '../services/audio';
 
 interface Props { active: Destination | null; unread: number; onPick: (d: Destination) => void }
 
-/** Five destinations. Galeri, Cerita, Sapa Tamu and Hadiah were removed by decision. */
+/**
+ * The invitation's five sections. Galeri, Cerita and Sapa Tamu were removed by
+ * decision; Hadiah is a place on the map only, since it is play, not invitation.
+ */
 const ITEMS: { id: Destination; label: string; icon: string }[] = [
   { id: 'pasangan',  label: 'PASANGAN', icon: 'nav_pasangan' },
   { id: 'acara',     label: 'ACARA',    icon: 'nav_acara' },
