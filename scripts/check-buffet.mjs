@@ -6,7 +6,7 @@
 import './_register-ts.mjs';
 import assert from 'node:assert/strict';
 
-const { RECIPES, INGREDIENTS, score, startRound, step, roundTotal, isCorrect, ROUND_MS, MAX_ORDERS, SPEED_MS } =
+const { RECIPES, INGREDIENTS, shelfOrder, score, startRound, step, roundTotal, isCorrect, ROUND_MS, MAX_ORDERS, SPEED_MS } =
   await import('../src/game/buffet.ts');
 
 let n = 0;
@@ -86,5 +86,44 @@ for (let i = 0; i < MAX_ORDERS; i++) {
 }
 ok(fast.phase === 'over' && fast.served.length === MAX_ORDERS, `${MAX_ORDERS} orders end the round before the clock does`);
 ok(fast.served.every((s) => isCorrect(s.verdict)), 'and each was scored correct');
+
+// --- the shelf is shuffled, and shuffled properly
+// A fixed shelf turns into muscle memory, so the trays move each round. The risk
+// in hand-rolling a shuffle is a biased one: the classic off-by-one
+// (rand() * i instead of rand() * (i + 1)) silently pins index 0.
+const ALL = INGREDIENTS.map((i) => i.id);
+const seeded = (seed) => () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+
+for (const seed of [1, 7, 42, 999]) {
+  const shelf = shelfOrder(seeded(seed));
+  ok(shelf.length === ALL.length, `seed ${seed}: the shelf holds every tray`);
+  ok(new Set(shelf).size === ALL.length, `seed ${seed}: no tray appears twice`);
+  ok(ALL.every((id) => shelf.includes(id)), `seed ${seed}: no tray goes missing`);
+}
+ok(
+  shelfOrder(seeded(42)).join() === shelfOrder(seeded(42)).join(),
+  'the same seed lays the shelf out the same way',
+);
+
+// Every ingredient must be able to reach every slot, or the shuffle is biased.
+const seen = new Map(ALL.map((id) => [id, new Set()]));
+for (let i = 0; i < 4000; i++) {
+  shelfOrder(seeded(i * 7919 + 1)).forEach((id, pos) => seen.get(id).add(pos));
+}
+for (const [id, slots] of seen) {
+  ok(slots.size === ALL.length, `${id} can land in any of the ${ALL.length} slots`);
+}
+
+// And it is actually shuffled, not returned in INGREDIENTS order.
+let identical = 0;
+for (let i = 0; i < 300; i++) if (shelfOrder(seeded(i + 1)).join() === ALL.join()) identical++;
+ok(identical <= 1, `the shelf is not just INGREDIENTS order (${identical}/300 identical)`);
+
+const fresh = startRound(0, 'bakso', seeded(5));
+ok(fresh.shelf.length === ALL.length, 'a new round starts with a full shelf');
+ok(new Set(fresh.shelf).size === ALL.length, 'and no tray on it twice');
+// The shelf must hold still once the round is running.
+const after = step(step(fresh, { type: 'toggle', id: 'bakso' }), { type: 'tick', now: 1000 });
+ok(after.shelf.join() === fresh.shelf.join(), 'the shelf does not move under the guest mid-round');
 
 console.log(`✓ buffet: ${n} checks passed`);

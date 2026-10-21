@@ -207,20 +207,20 @@ function Play({ round, act }: { round: Round; act: (a: Action) => void }) {
       </section>
 
       <div className="grid grid-cols-4 gap-2">
-        {INGREDIENTS.map((i) => {
-          const on = order.picked.includes(i.id);
+        {round.shelf.map((id) => {
+          const on = order.picked.includes(id);
           return (
             <button
-              key={i.id}
+              key={id}
               type="button"
               aria-pressed={on}
-              onClick={() => { audio.play('click'); act({ type: 'toggle', id: i.id }); }}
+              onClick={() => { audio.play('click'); act({ type: 'toggle', id }); }}
               className={`grid min-h-tap justify-items-center gap-1 rounded-md px-1 py-2 ${
                 on ? 'border-[3px] border-gold-500 bg-parchment-300' : 'border-2 border-wood-400 bg-parchment-100'
               }`}
             >
-              <FoodIcon cell={i.cell} size={36} />
-              <span className="text-center text-[10px] font-semibold leading-3 text-ink-900">{i.name}</span>
+              <FoodIcon cell={CELL[id]} size={36} />
+              <span className="text-center text-[10px] font-semibold leading-3 text-ink-900">{NAME[id]}</span>
             </button>
           );
         })}

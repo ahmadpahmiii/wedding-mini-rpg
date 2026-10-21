@@ -25,6 +25,21 @@ export const INGREDIENTS: { id: IngredientId; name: string; cell: number }[] = [
   { id: 'bawang', name: 'Bawang', cell: 9 },
   { id: 'acar', name: 'Acar', cell: 10 },
 ];
+/**
+ * The trays, in a fresh order. INGREDIENTS is written grouped by dish and in
+ * sheet order, so a fixed shelf is muscle memory by the second round — the
+ * guest stops reading and just reaches. Shuffling per round keeps the hunt in
+ * a game whose whole difficulty is finding the sate before the timer runs out.
+ */
+export function shelfOrder(rand: () => number = Math.random): IngredientId[] {
+  const ids = INGREDIENTS.map((i) => i.id);
+  for (let i = ids.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [ids[i], ids[j]] = [ids[j], ids[i]];
+  }
+  return ids;
+}
+
 export const ICED_TEA_CELL = 15;
 export const BUFFET_SHEET = '/assets/buffet/items.png';
 
@@ -84,6 +99,9 @@ export interface Round {
   now: number;
   served: Served[];
   order: Order | null;
+  /** Which tray sits where this round. Shuffled once, not per order: a shelf
+   *  that moves under the guest mid-round reads as a bug, not a challenge. */
+  shelf: IngredientId[];
 }
 
 export type Action =
@@ -91,8 +109,12 @@ export type Action =
   | { type: 'serve'; now: number }
   | { type: 'tick'; now: number };
 
-export function startRound(now: number, first: RecipeId): Round {
-  return { phase: 'play', endsAt: now + ROUND_MS, now, served: [], order: { recipe: first, picked: [], startedAt: now } };
+export function startRound(now: number, first: RecipeId, rand: () => number = Math.random): Round {
+  return {
+    phase: 'play', endsAt: now + ROUND_MS, now, served: [],
+    order: { recipe: first, picked: [], startedAt: now },
+    shelf: shelfOrder(rand),
+  };
 }
 
 export const roundTotal = (r: Round): number => r.served.reduce((s, o) => s + o.points.total, 0);
